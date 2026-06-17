@@ -1,0 +1,226 @@
+---
+import { events } from '../data/events';
+
+const monthColors: Record<string, string> = {
+  červen: 'var(--color-teal)',
+  červenec: 'var(--color-orange)',
+  září: 'var(--color-pink)',
+};
+---
+
+<section id="kde-budeme" class="events-section">
+  <div class="container">
+    <div class="events-header reveal">
+      <p class="events-label">Sezóna 2025</p>
+      <h2 class="section-heading">KDE NÁS CHYTÍŠ</h2>
+      <p class="section-subheading">Sleduj nás na festivalech – přijedeme s plným truckem.</p>
+    </div>
+
+    <div class="events-list">
+      {events.map((event, i) => {
+        const Tag = event.url ? 'a' : 'div';
+        const linkProps = event.url
+          ? { href: event.url, target: '_blank', rel: 'noopener noreferrer' }
+          : {};
+        return (
+          <Tag class="event-card reveal" style={`--delay: ${i * 0.12}s`} {...linkProps}>
+            <div class="event-date-badge" style={`background: ${monthColors[event.month] ?? 'var(--color-teal)'}20; border-color: ${monthColors[event.month] ?? 'var(--color-teal)'}60;`}>
+              <span class="event-date-text" style={`color: ${monthColors[event.month] ?? 'var(--color-teal)'}`}>
+                {event.date}
+              </span>
+            </div>
+
+            <div class="event-info">
+              <h3 class="event-name">
+                <span class="event-name-line1">{event.nameLine1}</span>
+                <span class="event-name-line2">{event.nameLine2}</span>
+              </h3>
+              <p class="event-location">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                {event.location}
+              </p>
+            </div>
+
+            <div class="event-arrow" aria-hidden="true">→</div>
+          </Tag>
+        );
+      })}
+    </div>
+
+    <div class="events-more reveal">
+      <p>Chystáme víc akcí. Sleduj nás – přibývají průběžně.</p>
+    </div>
+  </div>
+
+  <!-- Dekorativní row na konci sekce -->
+  <div class="events-deco-row" aria-hidden="true">
+    <img src="/elements/kaktus.png" alt=""    width="70"  height="85"  loading="lazy" class="float" style="animation-delay: 0s"   />
+    <img src="/elements/pinata.png" alt=""    width="90"  height="90"  loading="lazy" class="float-slow" style="animation-delay: 0.5s" />
+    <img src="/elements/sombrero.png" alt=""  width="100" height="72"  loading="lazy" class="float" style="animation-delay: 1.2s" />
+    <img src="/elements/pinata.png" alt=""    width="75"  height="75"  loading="lazy" class="float-slow" style="animation-delay: 0.8s" />
+    <img src="/elements/kaktus.png" alt=""    width="65"  height="80"  loading="lazy" class="float" style="animation-delay: 1.6s" />
+  </div>
+</section>
+
+<style>
+  .events-section {
+    position: relative;
+    padding: 6rem 0 7rem;
+    background: linear-gradient(180deg, #120820 0%, var(--color-dark) 100%);
+    overflow: hidden;
+  }
+
+  .events-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .events-label {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-orange);
+    margin-bottom: 0.5rem;
+  }
+
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .event-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.6rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 180, 180, 0.2);
+    border-radius: var(--border-radius-card);
+    transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+    transition-delay: var(--delay, 0s);
+    color: var(--color-teal);
+  }
+
+  .event-card:hover {
+    border-color: var(--color-teal);
+    transform: translateX(4px);
+    box-shadow: -4px 0 20px rgba(0, 180, 180, 0.15);
+  }
+
+  .event-date-badge {
+    flex-shrink: 0;
+    flex-basis: 190px;
+    width: 190px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid;
+    text-align: center;
+  }
+
+  .event-date-text {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: block;
+    letter-spacing: 0.02em;
+  }
+
+  .event-info {
+    flex: 1;
+  }
+
+  a.event-card {
+    text-decoration: none;
+  }
+
+  .event-name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    color: var(--color-cream);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .event-name-line1,
+  .event-name-line2 {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .event-location {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: rgba(245, 240, 220, 0.55);
+  }
+
+  .event-arrow {
+    flex-shrink: 0;
+    font-size: 1.4rem;
+    color: var(--color-teal);
+    opacity: 0.4;
+    transition: opacity var(--transition-base), transform var(--transition-base);
+  }
+
+  .event-card:hover .event-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  .events-more {
+    text-align: center;
+    margin-top: 2rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: rgba(245, 240, 220, 0.45);
+    font-style: italic;
+  }
+
+  /* Dekorativní row */
+  .events-deco-row {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    pointer-events: none;
+    padding: 0 8%;
+  }
+
+  .events-deco-row img {
+    display: block;
+    height: auto;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  }
+
+  @media (max-width: 600px) {
+    .event-card {
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .event-date-badge {
+      flex-basis: auto;
+      width: auto;
+    }
+
+    .events-deco-row img:nth-child(3),
+    .events-deco-row img:nth-child(4) {
+      display: none;
+    }
+  }
+</style>

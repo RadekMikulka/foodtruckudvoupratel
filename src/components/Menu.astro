@@ -1,0 +1,158 @@
+---
+import { menuCategories } from '../data/menu';
+import MenuCard from './MenuCard.astro';
+
+const categoryImages: Record<string, string> = {
+  burritos: '/elements/burrito.png',
+  quesadillas: '/elements/quesadilla.png',
+  nachos: '/elements/nachos.png',
+};
+---
+
+<section id="menu" class="menu-section">
+  <div class="menu-kaktus-deco" aria-hidden="true">
+    <img src="/elements/kaktus.png" alt="" width="80" height="100" loading="lazy" />
+  </div>
+
+  <div class="container">
+    <div class="menu-header reveal">
+      <p class="menu-label">Co vaříme</p>
+      <h2>NAŠE MENU</h2>
+      <p class="section-subheading">Mexická klasika. Poctivé porce. Žádné kompromisy.</p>
+    </div>
+
+    {menuCategories.map((category, catIdx) => (
+      <div class="menu-category reveal" style={`--delay: ${catIdx * 0.1}s`}>
+        <div class="menu-category-header">
+          <div class="menu-category-icon">
+            <img
+              src={categoryImages[category.id] ?? ''}
+              alt={category.name}
+              width="56"
+              height="56"
+              loading="lazy"
+            />
+          </div>
+          <h3 class="menu-category-name">{category.name}</h3>
+        </div>
+        <div class="menu-grid">
+          {category.items.map((item) => (
+            <MenuCard item={item} />
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <div class="menu-note reveal">
+      <img src="/elements/chilli-papricka.png" alt="" width="14" height="21" loading="lazy" />
+      <span>= Obsahuje jalapeños. Pokud chcete bez, stačí říct.</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .menu-section {
+    position: relative;
+    padding: 6rem 0 5rem;
+    background: var(--color-dark);
+    overflow: hidden;
+    text-transform: uppercase;
+  }
+
+  .menu-kaktus-deco {
+    position: absolute;
+    top: 3rem;
+    right: 2rem;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.25;
+  }
+
+  .menu-kaktus-deco img {
+    display: block;
+    filter: saturate(0) brightness(2);
+  }
+
+  .menu-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .menu-label {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-orange);
+    margin-bottom: 0.5rem;
+  }
+
+  .menu-category {
+    margin-bottom: 3.5rem;
+    transition-delay: var(--delay, 0s);
+  }
+
+  .menu-category-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(0, 180, 180, 0.2);
+  }
+
+  .menu-category-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .menu-category-icon img {
+    display: block;
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+  }
+
+  .menu-category-name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--color-cream);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .menu-note {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 45, 126, 0.06);
+    border: 1px solid rgba(255, 45, 126, 0.15);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: rgba(245, 240, 220, 0.6);
+  }
+
+  .menu-note img {
+    display: block;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  @media (max-width: 600px) {
+    .menu-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

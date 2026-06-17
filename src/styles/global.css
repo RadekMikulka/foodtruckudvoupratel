@@ -1,0 +1,202 @@
+/* Design tokens */
+:root {
+  --color-teal: #00B4B4;
+  --color-pink: #FF2D7E;
+  --color-cream: #F5F0DC;
+  --color-dark: #1A0A2E;
+  --color-yellow: #FFD93D;
+  --color-orange: #FF6B35;
+
+  --font-heading: 'Climate Crisis', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+
+  --border-radius-card: 12px;
+  --transition-base: 0.3s ease;
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  background-color: var(--color-dark);
+  color: var(--color-cream);
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Utility */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Glitch text */
+.glitch-text {
+  position: relative;
+  color: var(--color-cream);
+  font-family: var(--font-heading);
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  left: -3px;
+  color: var(--color-teal);
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+
+.glitch-text::after {
+  left: 3px;
+  color: var(--color-pink);
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glitch-text::before {
+    animation: glitch-top 4s infinite;
+  }
+  .glitch-text::after {
+    animation: glitch-bottom 4s infinite;
+  }
+}
+
+@keyframes glitch-top {
+  0%, 90%, 100% { transform: translateX(0); }
+  92% { transform: translateX(-4px); }
+  94% { transform: translateX(2px); }
+  96% { transform: translateX(-2px); }
+  98% { transform: translateX(3px); }
+}
+
+@keyframes glitch-bottom {
+  0%, 90%, 100% { transform: translateX(0); }
+  92% { transform: translateX(4px); }
+  94% { transform: translateX(-2px); }
+  96% { transform: translateX(3px); }
+  98% { transform: translateX(-3px); }
+}
+
+/* Float animation */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(3deg); }
+  }
+
+  .float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .float-slow {
+    animation: float-slow 6s ease-in-out infinite;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  background: var(--color-cream);
+  color: var(--color-dark);
+  box-shadow:
+    2px -2px 0 var(--color-teal),
+    -2px  2px 0 var(--color-pink);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    4px -4px 0 var(--color-teal),
+    -4px  4px 0 var(--color-pink);
+}
+
+/* Varianty zachovávají stejný vizuál – třídy zůstávají pro zpětnou kompatibilitu */
+.btn-pink,
+.btn-teal,
+.btn-outline {
+  background: var(--color-cream);
+  color: var(--color-dark);
+}
+
+/* Section headings */
+.section-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.section-subheading {
+  font-size: 1.2rem;
+  color: var(--color-teal);
+  margin-bottom: 3rem;
+  letter-spacing: 0.03em;
+}
+
+/* Calavera skull pattern background */
+.skull-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ctext x='20' y='50' font-size='36' opacity='0.04' fill='%23F5F0DC'%3E💀%3C/text%3E%3C/svg%3E");
+  pointer-events: none;
+}

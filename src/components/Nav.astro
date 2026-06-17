@@ -1,0 +1,172 @@
+---
+---
+
+<nav class="nav" id="nav">
+  <div class="nav-inner container">
+    <a href="#hero" class="nav-logo">
+      <img src="/logo.png" alt="U Dvou Přátel" width="64" height="64" loading="lazy" />
+    </a>
+
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Otevřít menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#o-nas">O nás</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#kde-budeme">Kde jsme</a></li>
+      <li><a href="#akce">Akce</a></li>
+      <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById('nav')!;
+  const hamburger = document.getElementById('nav-hamburger')!;
+  const links = document.getElementById('nav-links')!;
+
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  hamburger.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', String(open));
+  });
+
+  links.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      links.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1rem 0;
+    transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+  }
+
+  .nav.scrolled {
+    background: rgba(26, 10, 46, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+    padding: 0.6rem 0;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav-logo img {
+    display: block;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-cream);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-teal);
+  }
+
+  .nav-links .nav-cta {
+    background: var(--color-cream);
+    color: var(--color-dark) !important;
+    padding: 0.45rem 1.3rem;
+    border-radius: 10px;
+    box-shadow: 2px -2px 0 var(--color-teal), -2px 2px 0 var(--color-pink);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .nav-links .nav-cta:hover {
+    color: var(--color-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 4px -4px 0 var(--color-teal), -4px 4px 0 var(--color-pink);
+  }
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--color-cream);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    .nav-hamburger {
+      display: flex;
+    }
+
+    .nav-links {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(26, 10, 46, 0.97);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+      font-size: 1.4rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-links.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .nav-links a {
+      font-size: 1.6rem;
+    }
+
+    .nav-hamburger {
+      z-index: 200;
+      position: relative;
+    }
+  }
+</style>

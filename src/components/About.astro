@@ -1,0 +1,380 @@
+---
+---
+
+<section id="o-nas" class="about">
+  <div class="about-kytara-deco" aria-hidden="true">
+    <img src="/elements/mariachi-kytara.png" alt="" width="260" height="320" loading="lazy" />
+  </div>
+
+  <div class="container">
+
+    <!-- MEDAILONKY zakladatelů -->
+    <div class="about-founders reveal">
+      <div class="about-founder about-founder--dzejdzej">
+        <div class="founder-portrait-wrap">
+          <img src="/dzejdzej.png" alt="DžejDžej" class="founder-portrait" width="400" height="420" loading="lazy" />
+        </div>
+        <div class="founder-info">
+          <p class="founder-role">Šéfkuchař</p>
+          <h3 class="founder-name">DžejDžej</h3>
+          <p class="founder-title">Pán pánve a krotitel tortill</p>
+          <p class="founder-bio">DžejDžej je mozkem, srdcem a hlavně rukama naší kuchyně. Šéfkuchař a muž, který ví, že láska prochází žaludkem. Ideálně zabalená v&nbsp;tortille.</p>
+        </div>
+      </div>
+
+      <div class="about-founder about-founder--kasik">
+        <div class="founder-portrait-wrap">
+          <img src="/kasik.png" alt="Kašík" class="founder-portrait" width="400" height="420" loading="lazy" />
+        </div>
+        <div class="founder-info">
+          <p class="founder-role">Pingl</p>
+          <h3 class="founder-name">Kašík</h3>
+          <p class="founder-title">Ministr obchodu a úsměvů</p>
+          <p class="founder-bio">Kašík se u nás stará o hosty, úsměvy a hladový dav. Umí poradit, rozesmát a občas i předstírat, že fronta je součást zážitku.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXT -->
+    <div class="about-text reveal" style="--delay: 0.15s">
+      <p class="about-label">O nás</p>
+      <h2>U Dvou<br />přátel</h2>
+      <p class="about-sub">Kuchař a pingl v profesním životě. Dva přátelé v tom osobním.</p>
+
+      <p class="about-body">
+        Někdo si otevře food truck, protože má propracovaný byznys plán, tabulky, investiční strategii
+        a desetiletou vizi.
+      </p>
+      <p class="about-body">
+        My jsme si ho otevřeli, protože máme rádi dobré jídlo, špatné vtípky a jeden druhého
+        jsme ještě nestihli přerazit pánví.
+      </p>
+      <p class="about-body">
+        U Dvou přátel je místo, kde se potkává poctivá chuť, přátelská atmosféra a lehce
+        nekontrolovatelná dávka chaosu. Za volantem, grilem i nápady stojí DžejDžej a Kašík —
+        dvojice, která je trochu jako Quentin z Montargis a Ruby z Puteaux, akorát v české gastro
+        verzi. A s tím rozdílem, že ani jeden z nich neumí držet hubu.
+      </p>
+      <p class="about-body">
+        Jsme Bodie a Doyle české gastroscény. Jen místo honiček máme tortilly, místo zbraní omáčky
+        a místo tajných misí hladové zákazníky. Občas působíme jako Bud Spencer a Terence Hill
+        v maringotce — jeden by nejradši všechno vyřešil silou sýra, druhý úsměvem
+        a dobře mířenou hláškou.
+      </p>
+      <p class="about-body">
+        A když je nejhůř? Nastupuje režim Chip a Dale: záchranná tortilla. Mise je jasná: nakrmit
+        hladové žaludky, zvednout náladu a ideálně u toho nic nepodpálit.
+      </p>
+
+      <p class="about-closing">
+        Tak se stavte.<br />
+        <span>U Dvou přátel je vždycky místo pro dalšího.</span>
+      </p>
+
+      <blockquote class="about-pullquote">
+        <span class="pullquote-line">Nejsme fine dining.</span>
+        <span class="pullquote-line">Jsme <em>friend</em> dining.</span>
+      </blockquote>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .about {
+    position: relative;
+    padding: 5rem 0 4rem;
+    background: linear-gradient(180deg, var(--color-dark) 0%, #120820 100%);
+    overflow: hidden;
+  }
+
+  .about-kytara-deco {
+    position: absolute;
+    right: -20px;
+    bottom: 5%;
+    opacity: 0.08;
+    transform: rotate(-10deg);
+    pointer-events: none;
+  }
+
+  .about-kytara-deco img {
+    display: block;
+    filter: saturate(0) brightness(2);
+  }
+
+  /* ── MEDAILONKY ─────────────────────────────────────── */
+  .about-founders {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .about-founder {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .about-founder:hover {
+    transform: translateY(-6px);
+  }
+
+  .about-founder--dzejdzej {
+    border-color: rgba(0, 180, 180, 0.25);
+  }
+
+  .about-founder--dzejdzej:hover {
+    box-shadow: 0 16px 48px rgba(0, 180, 180, 0.2);
+  }
+
+  .about-founder--kasik {
+    border-color: rgba(255, 45, 126, 0.25);
+  }
+
+  .about-founder--kasik:hover {
+    box-shadow: 0 16px 48px rgba(255, 45, 126, 0.2);
+  }
+
+  .founder-portrait-wrap {
+    width: 100%;
+    height: 280px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.15) 100%);
+    overflow: hidden;
+  }
+
+  .founder-portrait {
+    height: 260px;
+    width: auto;
+    max-width: 90%;
+    display: block;
+    filter: drop-shadow(0 12px 32px rgba(0,0,0,0.5));
+    transition: transform 0.4s ease;
+    object-fit: contain;
+  }
+
+  .about-founder:hover .founder-portrait {
+    transform: scale(1.04) translateY(-4px);
+  }
+
+  .founder-info {
+    padding: 1.8rem 1.6rem 1.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .about-founder--dzejdzej .founder-info {
+    border-top-color: rgba(0, 180, 180, 0.2);
+  }
+
+  .about-founder--kasik .founder-info {
+    border-top-color: rgba(255, 45, 126, 0.2);
+  }
+
+  .founder-role {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.2rem;
+  }
+
+  .about-founder--dzejdzej .founder-role { color: var(--color-teal); }
+  .about-founder--kasik   .founder-role { color: var(--color-pink); }
+
+  .founder-name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-cream);
+    text-shadow:
+      1px -1px 0 var(--color-teal),
+      -1px  1px 0 var(--color-pink);
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+    padding-top: 0.2rem;
+  }
+
+  .founder-title {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(245, 240, 220, 0.55);
+    margin-bottom: 1rem;
+  }
+
+  .founder-bio {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: rgba(245, 240, 220, 0.78);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .founder-superpower {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .superpower-label {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-yellow);
+  }
+
+  .superpower-text {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: rgba(245, 240, 220, 0.75);
+    line-height: 1.5;
+  }
+
+  .founder-quote {
+    border-left: 2px solid;
+    padding: 0.5rem 0.9rem;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-style: italic;
+    color: rgba(245, 240, 220, 0.6);
+    line-height: 1.55;
+  }
+
+  .about-founder--dzejdzej .founder-quote { border-color: rgba(0, 180, 180, 0.4); }
+  .about-founder--kasik   .founder-quote { border-color: rgba(255, 45, 126, 0.4); }
+
+  .quote-source {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.3rem;
+  }
+
+  .about-founder--dzejdzej .quote-source { color: var(--color-teal); }
+  .about-founder--kasik   .quote-source { color: var(--color-pink); }
+
+  /* ── TEXT SEKCE ─────────────────────────────────────── */
+  .about-text {
+    max-width: 100%;
+  }
+
+  .about-label {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--color-orange);
+    margin-bottom: 0.6rem;
+  }
+
+  .about-text h2 {
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    margin-bottom: 1.8rem;
+    line-height: 1.3;
+  }
+
+  .about-sub {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-teal);
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+
+  .about-body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: rgba(245, 240, 220, 0.82);
+    line-height: 1.75;
+    margin-bottom: 1.1rem;
+  }
+
+  .about-pullquote {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    color: var(--color-cream);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+    text-align: center;
+    margin: 3rem 0 0;
+    padding: 4rem 6rem;
+    border-top: none;
+    position: relative;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05em;
+  }
+
+  .about-pullquote::before,
+  .about-pullquote::after {
+    content: none;
+  }
+
+  .pullquote-line {
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-pullquote em {
+    color: var(--color-pink);
+    font-style: normal;
+  }
+
+  .about-closing {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    line-height: 1.6;
+    margin-top: 1.4rem;
+  }
+
+  .about-closing span {
+    color: rgba(245, 240, 220, 0.65);
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .reveal { transition-delay: var(--delay, 0s); }
+
+  /* ── RESPONSIVE ─────────────────────────────────────── */
+  @media (max-width: 680px) {
+    .about-founders {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+      margin: 0 auto 3rem;
+    }
+
+    .founder-portrait {
+      width: 65%;
+    }
+  }
+</style>

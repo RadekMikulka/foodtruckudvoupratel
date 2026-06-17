@@ -1,0 +1,240 @@
+---
+import { eventTypes } from '../data/eventTypes';
+
+const accentColors: Record<string, string> = {
+  teal:   'var(--color-teal)',
+  pink:   'var(--color-pink)',
+  orange: 'var(--color-orange)',
+  yellow: 'var(--color-yellow)',
+};
+---
+
+<section id="akce" class="event-types-section">
+  <!-- Dekorativní prvky -->
+  <div class="et-deco et-deco-l float-slow" aria-hidden="true">
+    <img src="/elements/maracas.png" alt="" width="110" height="110" loading="lazy" />
+  </div>
+  <div class="et-deco et-deco-r float" aria-hidden="true">
+    <img src="/elements/pinata.png" alt="" width="120" height="120" loading="lazy" />
+  </div>
+
+  <div class="container">
+    <div class="et-header reveal">
+      <p class="et-label">Jezdíme všude</p>
+      <h2>PRO KAŽDOU<br />PŘÍLEŽITOST</h2>
+      <p class="section-subheading">
+        Festival, svatba, firemní akce nebo sousedská grilovačka?<br />
+        Stačí říct – přijedeme s celou show.
+      </p>
+    </div>
+
+    <ul class="et-grid" role="list">
+      {eventTypes.map((et, i) => (
+        <li
+          class="et-card reveal"
+          style={`--delay: ${(i % 4) * 0.08}s; --accent: ${accentColors[et.accent]};`}
+        >
+          <span class="et-emoji-bg" aria-hidden="true">{et.emoji}</span>
+          <div class="et-card-content">
+            <h3 class="et-name">
+              <span class="et-name-line1">{et.nameLine1}</span>
+              <span class="et-name-line2">{et.nameLine2}</span>
+            </h3>
+            <p class="et-tagline">{et.tagline}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="et-cta reveal">
+      <a href="#kontakt" class="btn btn-pink">
+        Chci gastroshow na svojí akci ↓
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .event-types-section {
+    position: relative;
+    padding: 6rem 0 5rem;
+    background: linear-gradient(180deg, var(--color-dark) 0%, #0e0520 100%);
+    overflow: hidden;
+  }
+
+  /* Dekorativní obrázky */
+  .et-deco {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .et-deco img {
+    display: block;
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4));
+  }
+
+  .et-deco-l {
+    left: 2%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.65;
+  }
+
+  .et-deco-r {
+    right: 2%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.65;
+  }
+
+  /* Header */
+  .et-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .et-label {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-orange);
+    margin-bottom: 0.5rem;
+  }
+
+  .et-header h2 {
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  /* Grid */
+  .et-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  /* Karta */
+  .et-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--border-radius-card);
+    padding: 1.8rem 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    transition:
+      border-color var(--transition-base),
+      box-shadow var(--transition-base),
+      transform var(--transition-base);
+    transition-delay: var(--delay, 0s);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .et-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+
+  .et-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 28px color-mix(in srgb, var(--accent) 20%, transparent);
+    transform: translateY(-4px);
+  }
+
+  .et-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* Emoji v pozadí */
+  .et-emoji-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 7rem;
+    line-height: 1;
+    opacity: 0.12;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  .et-card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    flex: 1;
+  }
+
+  /* Texts */
+  .et-name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+    color: var(--color-cream);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .et-name-line1,
+  .et-name-line2 {
+    display: block;
+  }
+
+  .et-tagline {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: rgba(245, 240, 220, 0.6);
+    line-height: 1.55;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* CTA */
+  .et-cta {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .et-cta .btn {
+    font-size: 1.1rem;
+    padding: 1rem 2.4rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .et-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .et-deco-l, .et-deco-r {
+      display: none;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .et-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
