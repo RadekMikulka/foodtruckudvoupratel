@@ -1,387 +1,66 @@
-# U Dvou Přátel – Food Truck Gastro Show
-## CLAUDE.md – Vývojový brief pro Claude Code
+# CLAUDE.md
 
----
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 🌮 Co to je
+## Commands
 
-**U Dvou Přátel** je mexický food truck, který objíždí festivaly po celé ČR. Za projektem stojí dva kámoši – DžejDžej (kuchař) a Kašík (číšník) – jejichž osud spojil láska k jídlu, cestování a trochu šílené energii. Tohle není restaurace. Je to gastroshow na kolech.
+```bash
+npm run dev      # dev server at localhost:4321
+npm run build    # static build → dist/
+npm run preview  # serve dist/ locally
+```
 
-Web má jediný účel: **zaujmout návštěvníky festivalu i organizátory akcí**, dostat je do nálady, ukázat menu a přesvědčit je, aby si objednali catering.
+Deploy is automatic: push to `main` → Vercel picks it up. No manual deploy step needed.
 
----
+## Architecture
 
-## 🎨 Design systém
+Single-page Astro static site (`output: 'static'`). One entry point: `src/pages/index.astro` imports every section component in order.
 
-### Barevná paleta
+**Data → Component flow:**  
+Content lives in `src/data/` as typed TypeScript exports. Components import and map over it — no props drilling through pages.
 
-| Název | Hex | Použití |
+- `src/data/menu.ts` → `Menu.astro` + `MenuCard.astro`
+- `src/data/events.ts` → `Events.astro`
+- `src/data/eventTypes.ts` → `EventTypes.astro`
+
+**Styles:**  
+- `src/styles/global.css` — CSS custom properties (design tokens), global utilities (`.container`, `.btn`, `.glitch-text`, `.reveal`, `.float`, `.section-heading`). **Always use tokens, never hardcoded colors.**
+- `src/styles/typography.css` — type scale
+- Each `.astro` component has its own `<style>` block (scoped by Astro)
+
+**Layout.astro** does three things: injects Google Fonts (Climate Crisis + Quicksand), sets meta, and runs the scroll-reveal IntersectionObserver that adds `.visible` to `.reveal` elements.
+
+## Key patterns
+
+**2-line headings** — Menu items, events, and event types all have `nameLine1`/`nameLine2` fields in their data types. Rendered as two `<span>` blocks inside a flex-column container. When adding new items, always split the name.
+
+**Glitch text** — Use `<span class="glitch-text" data-text="TEXT">TEXT</span>`. The `data-text` attribute must match the inner text exactly; it drives the `::before`/`::after` pseudo-elements.
+
+**Scroll reveal** — Add `class="reveal"` to any element. Use `style="--delay: 0.1s"` for staggered reveals within a list. No JS needed in the component.
+
+**Decorative floats** — `class="float"` (4s) or `class="float-slow"` (6s). Both respect `prefers-reduced-motion`.
+
+**Buttons** — Always use `.btn`. The variant classes `.btn-pink` and `.btn-teal` are aliases (same visual) kept for semantic clarity.
+
+**Menu grid layout** — Burritos and Nachos use `.menu-grid--2plus1` (two cards side by side, third full-width). Quesadillas uses the default auto-fit grid. Set via class in `Menu.astro` based on `category.id`.
+
+## Design system
+
+Fonts: **Climate Crisis** (headings, uppercase) · **Quicksand** (body, 400–700)
+
+| Token | Value | Use |
 |---|---|---|
-| `--color-teal` | `#00B4B4` | Primární akcent, hover stavy, bordery |
-| `--color-pink` | `#FF2D7E` | CTA tlačítka, důrazy, glitch stíny |
-| `--color-cream` | `#F5F0DC` | Texty nadpisů, světlé plochy |
-| `--color-dark` | `#1A0A2E` | Pozadí, tmavé sekce (deep purple-black) |
-| `--color-yellow` | `#FFD93D` | Ilustrace, dekorativní prvky |
-| `--color-orange` | `#FF6B35` | Sekundární akcent, ceny, tagy |
+| `--color-teal` | `#00B4B4` | Primary accent, borders, hover |
+| `--color-pink` | `#FF2D7E` | CTA buttons, emphasis |
+| `--color-cream` | `#F5F0DC` | Heading text, light surfaces |
+| `--color-dark` | `#1A0A2E` | Backgrounds (deep purple-black) |
+| `--color-yellow` | `#FFD93D` | Illustrations, decorative |
+| `--color-orange` | `#FF6B35` | Eyebrow labels, secondary accent |
 
-### Typografie
+Heading `text-shadow` for chromatic aberration: `1px -1px 0 var(--color-teal), -1px 1px 0 var(--color-pink)`.
 
-```css
-/* Headings – maximální výraz */
-@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap');
+Decoration assets (PNG illustrations) live in `public/elements/`. Founder portraits are `public/dzejdzej.png` and `public/kasik.png`.
 
-/* Body text – čitelnost s charakterem */
-@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&display=swap');
-```
+## Tone
 
-- **Climate Crisis** → H1, H2, velké hero texty. Velký. Tučný. Žádné kompromisy.
-- **Dongle** → veškeré tělo textu, popisky menu, navigace, footer
-- Základní velikost: `18px`, line-height: `1.6`
-- Nadpisy uppercase, letter-spacing trochu natažený
-
-### Signature vizuální prvek
-
-**Glitch text efekt** na hlavním nadpisu – inspirovaný logotypem (Image 2).  
-Teal offset doleva, pink offset doprava, bílý text uprostřed. Jemná animace při loadu.
-
-```css
-.glitch-text {
-  position: relative;
-  color: var(--color-cream);
-  font-family: 'Climate Crisis', sans-serif;
-}
-.glitch-text::before {
-  content: attr(data-text);
-  position: absolute;
-  left: -3px;
-  color: var(--color-teal);
-  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-}
-.glitch-text::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 3px;
-  color: var(--color-pink);
-  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-}
-```
-
----
-
-## 🌵 Mexické ilustrační prvky (SVG/emoji dekorace)
-
-Používej tyto inline SVG symboly nebo emoji jako dekorativní prvky mezi sekcemi, v pozadích a jako odrážky v menu. Vždy jednoduché, stylizované, barevné.
-
-**Sada symbolů:**
-- 🌵 Kaktus – oddělení sekcí
-- 💀 Calavera lebka – hero pozadí, footer
-- 🎸 Kytara – vibe sekce / o nás
-- 🪅 Maracas / 🎺 Trubka – festivalová sekce
-- 🌶️ Chilli – menu spice indikátor
-- 🍋 Limeta/citron – detail v menu sekci
-- 🦜 Papoušek / ptáček – dekorativní
-- 🌺 Květ hibiskus – florální detaily
-- 🌮 Taco – menu ikona
-- 🎭 Sombrero – hero ornament
-
-Vytvářej tyto jako SVG komponenty nebo CSS pseudo-elementy, NE jako emoji (pro konzistenci designu). Používej barvy z palety výše.
-
----
-
-## 📐 Struktura stránek
-
-### Jedna stránka (single-page scroll) s anchor navigací
-
-```
-#hero
-#o-nas  
-#menu
-#kde-budeme
-#kontakt
-```
-
-### Sekce a jejich layout
-
-#### 1. HERO (`#hero`)
-- Celá výška obrazovky (100vh)
-- Pozadí: `--color-dark` s subtilním pattern z calavera lebek (opacity 0.05)
-- Logo (PNG z přílohy) jako centerpiece, max 420px width
-- Pod logem: glitch text H1 "U DVOU PŘÁTEL"
-- Podtitul: "Food Truck Gastro Show" – Dongle, teal barva
-- Tagline: *"S láskou ke žrádlu, přátelům a cestování vstříc k novým zítřkům"*
-- CTA tlačítko: "Mrkni na menu ↓" → scroll do #menu
-- Floating mexické ilustrace (kaktus vlevo, maracas vpravo), CSS animace: jemné float nahoru-dolů
-
-#### 2. O NÁS (`#o-nas`)
-- Rozdělení asymetrické (60/40)
-- Vlevo: text blok
-- Vpravo: **velká stylizovaná SVG ilustrace** ve stylu loga (dva siluety, mexické elementy) – fotky nejsou k dispozici, nahradit ilustrací odpovídající vibe loga
-- **Heading:** "DžejDžej & Kašík"
-- **Subheading:** "Kuchař a číšník. Osud nás spojil."
-- **Text:** *"Od té doby rozjíždíme show rozměrů intergalaktických."*
-- Dekorativní kytara SVG v pozadí (opacity 0.08)
-- Teal linka jako levý border na quote bloku
-
-#### 3. MENU (`#menu`)
-- Dark background sekce (`--color-dark`)
-- Heading s glitch efektem: "NAŠE MENU"
-- Tři kategorie jako card grid nebo tabbed interface:
-  - 🌯 **BURRITOS** (3 položky)
-  - 🧀 **QUESADILLAS** (2 položky)
-  - 🌽 **NACHOS** (3 položky)
-- Každá menu karta:
-  - Název: Climate Crisis, cream
-  - Popis: Dongle 400, světle šedá
-  - Ikona/ilustrace kategorie
-  - Thin border: `1px solid rgba(0, 180, 180, 0.3)`
-  - Hover: border pink, lehký glow efekt
-- **Chilli indikátor** (🌶️ SVG) pro pikantnost u položek s jalapeños
-
-#### 4. KDE BUDEME (`#kde-budeme`)
-- Světlejší sekce nebo subtle gradient
-- Heading: "KDE NÁS CHYTÍŠ"
-- Timeline / card seznam událostí:
-  - **Jílovské pivní slavnosti** – 19.–20. června
-  - **Třebsínské zvonění** – 3.–4. července
-  - **Trampské Pikovice** – 12. září
-- Každá událost: datum jako badge (pink/teal), název tučně, možná ikona festivalu
-- Placeholder pro budoucí přidávání eventů
-
-#### 5. KONTAKT / CTA (`#kontakt`)
-- Silný závěr: celá šířka, tmavé pozadí
-- Velký heading: *"Rozbalíme gastroshow i u vás!"*
-- Subtext o cateringu a soukromých akcích
-- Dva CTA buttony:
-  - `📞 +420 608 58 40 60` → `tel:` link
-  - `✉️ foodtruck@udvoupratel.fun` → `mailto:` link
-- Styl tlačítek: solid fill (pink a teal), velký, kulatý border-radius
-- Footer: copyright, logo malé, soc. sítě (placeholder)
-
----
-
-## 🔧 Technické požadavky
-
-### Stack
-- **Astro** (statický výstup, ideální pro landing page – rychlost, jednoduchost, žádný JS overhead navíc)
-- Komponenty v `.astro` souborech, styly jako scoped CSS nebo globální v `src/styles/`
-- Google Fonts přes `<link>` v `<head>` (`Layout.astro`)
-- Obrázky: logo PNG z `/public/logo.png`, logotyp z `/public/logotyp.png`
-- Astro config: `output: 'static'`, žádný SSR server není potřeba
-
-### Responsive
-- Mobile-first přístup
-- Breakpointy: `480px`, `768px`, `1024px`, `1280px`
-- Na mobilu: navigation jako hamburger menu
-- Menu grid: 3 sloupce → 2 → 1
-
-### Animace (jemné, účelné)
-```css
-@media (prefers-reduced-motion: no-preference) {
-  /* Float animace pro dekorativní prvky */
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-  }
-  
-  /* Fade-in při scrollu */
-  .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-```
-
-### Navigace
-- Sticky navbar při scrollu, průhledná na hero → tmavá při scrollu
-- Logo malé vlevo, anchor linky vpravo
-- Smooth scroll chování
-
-### Performance
-- Lazy-load obrázků
-- Fonty s `font-display: swap`
-- SVG ilustrace inline (ne jako img tagy)
-
----
-
-## 📁 Struktura souborů
-
-```
-u-dvou-pratel/
-├── public/
-│   ├── logo.png              ← logo z přílohy
-│   ├── logotyp.png           ← logotyp z přílohy
-│   └── icons/                ← SVG mexické ilustrace
-│       ├── cactus.svg
-│       ├── skull.svg
-│       ├── guitar.svg
-│       ├── chili.svg
-│       └── sombrero.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro      ← HTML shell, fonty, meta
-│   ├── components/
-│   │   ├── Nav.astro
-│   │   ├── Hero.astro
-│   │   ├── About.astro
-│   │   ├── Menu.astro
-│   │   ├── MenuCard.astro
-│   │   ├── Events.astro
-│   │   └── Contact.astro
-│   ├── pages/
-│   │   └── index.astro       ← single page, importuje všechny komponenty
-│   ├── styles/
-│   │   ├── global.css        ← reset + CSS variables (design tokeny)
-│   │   └── typography.css    ← font-face, type scale
-│   └── data/
-│       ├── menu.ts           ← menu položky jako typed data
-│       └── events.ts         ← eventy jako typed data
-├── astro.config.mjs
-├── package.json
-└── CLAUDE.md                 ← tento soubor
-```
-
----
-
-## 🗂️ Data struktury (src/data/)
-
-### `menu.ts`
-```typescript
-export const menuCategories = [
-  {
-    id: 'burritos',
-    name: 'BURRITOS',
-    icon: 'burrito', // SVG ikona
-    items: [
-      {
-        name: 'Kuřecí burrito',
-        description: 'Velká pšeničná tortilla plněná šťavnatým kuřecím masem, rajčaty, paprikou, salátem, fazolemi, cibulkou, cheddarem, eidamem a jalapeños.',
-        tagline: 'Pořádná porce do ruky, která zasytí.',
-        spicy: true,
-      },
-      {
-        name: 'Vepřové burrito',
-        description: 'Tortilla s jemnou vepřovou panenkou, fazolemi, zeleninou, červenou i bílou cibulkou, sýrem, cheddarem a jalapeños.',
-        tagline: 'Mexická klasika s poctivou masovou náloží.',
-        spicy: true,
-      },
-      {
-        name: 'Zeleninové burrito',
-        description: 'Celozrnná tortilla s rajčaty, paprikou, salátem, fazolemi, cibulkou, sýrem, cheddarem a jalapeños.',
-        tagline: 'Lehčí varianta bez masa, ale pořád plná chuti.',
-        spicy: true,
-      },
-    ],
-  },
-  {
-    id: 'quesadillas',
-    name: 'QUESADILLAS',
-    icon: 'quesadilla',
-    items: [
-      {
-        name: 'Kuřecí quesadilla',
-        description: 'Křupavě zapečená tortilla s kuřecím masem, sýrem, cheddarem, rajčaty, cibulkou, jalapeños a salsou.',
-        tagline: 'Rozteklý sýr, šťavnaté kuře, mexická pohoda.',
-        spicy: true,
-      },
-      {
-        name: 'Vepřová quesadilla',
-        description: 'Zapečená tortilla s vepřovou panenkou, cheddarem, eidamem, rajčaty, cibulkou, jalapeños a salsou.',
-        tagline: 'Sýrová, masová, křupavá. Přesně tak, jak má být.',
-        spicy: true,
-      },
-    ],
-  },
-  {
-    id: 'nachos',
-    name: 'NACHOS',
-    icon: 'nachos',
-    items: [
-      {
-        name: 'Nachos se salsou',
-        description: 'Kukuřičné nachos chipsy se svěží rajčatovou salsou.',
-        tagline: 'Ideální na zobání nebo jako lehčí snack.',
-        spicy: false,
-      },
-      {
-        name: 'Nachos con queso',
-        description: 'Nachos se salsou a rozteklým sýrem.',
-        tagline: 'Jednoduchá mexická klasika, která mizí rychle.',
-        spicy: false,
-      },
-      {
-        name: 'Loaded nachos con queso',
-        description: 'Nachos se salsou, sýrem, rajčaty, paprikou, červenou cibulkou, olivami a jalapeños.',
-        tagline: 'Pořádně naložené nachos pro ty, kteří chtějí všechno.',
-        spicy: true,
-      },
-    ],
-  },
-];
-```
-
-### `events.ts`
-```typescript
-export const events = [
-  {
-    name: 'Jílovské pivní slavnosti',
-    date: '19.–20. června',
-    month: 'červen',
-    location: 'Jílové u Prahy',
-    url: null, // doplnit pokud existuje
-  },
-  {
-    name: 'Třebsínské zvonění',
-    date: '3.–4. července',
-    month: 'červenec',
-    location: 'Třebsín',
-    url: null,
-  },
-  {
-    name: 'Trampské Pikovice',
-    date: '12. září',
-    month: 'září',
-    location: 'Pikovice',
-    url: null,
-  },
-];
-```
-
-
-
-- **Přímý, neformální, s humorem** – jako by to psali DžejDžej s Kašíkem osobně
-- Žádný marketing bullshit – autentická řeč festivalových foodies
-- Nadsázka je vítána ("show rozměrů intergalaktických")
-- Texty v sekci O nás: první osoba množného čísla ("rozjíždíme", "objíždíme")
-- Menu popisky: zachovat originální znění z briefu
-- CTA: akční, přímé ("Ozvěte se", "Mrkni", "Chytni nás")
-
----
-
-## 🚫 Čemu se vyhnout
-
-- Žádné stockové fotky mexické kuchyně (raději ilustrace nebo prázdné místo s placeholder)
-- Žádné generické restaurační šablony (bílé pozadí, serif font, červená/zelená)
-- Žádné heavy modální okna nebo popupy
-- Nepřehánět animace – stránka musí být rychlá i na festivalu na mobilu přes 4G
-- Nepoužívat `#FF0000` červenou – máme vlastní paletu
-
----
-
-## 🎯 Definition of Done
-
-- [ ] Hero sekce s logem, glitch textem a CTA
-- [ ] O nás sekce – DžejDžej & Kašík
-- [ ] Menu sekce – všechny 3 kategorie s kartami (Burritos, Quesadillas, Nachos)
-- [ ] Kde budeme – 3 eventy
-- [ ] Kontakt sekce s tel + email CTA
-- [ ] Sticky navigace
-- [ ] Responsive (mobile + desktop)
-- [ ] Mexické SVG dekorace na správných místech
-- [ ] Google Fonts: Climate Crisis + Dongle
-- [ ] Scroll reveal animace
-- [ ] Glitch efekt na hlavním nadpisu
+Czech, informal, with humor. First-person plural ("rozjíždíme", "objíždíme"). No corporate language. Exaggeration is welcome.
