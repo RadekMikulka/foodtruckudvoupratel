@@ -38,7 +38,7 @@
     <!-- TEXT -->
     <div class="about-text reveal" style="--delay: 0.15s">
       <p class="about-label">O nás</p>
-      <h2>U Dvou<br />přátel</h2>
+      <h2>U Dvou přátel</h2>
       <p class="about-sub">Kuchař a pingl v profesním životě. Dva přátelé v tom osobním.</p>
 
       <p class="about-body">
@@ -291,9 +291,10 @@
   }
 
   .about-text h2 {
-    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
     margin-bottom: 1.8rem;
     line-height: 1.3;
+    white-space: nowrap;
   }
 
   .about-sub {
@@ -375,6 +376,10 @@
 
     .founder-portrait {
       width: 65%;
+    }
+
+    .about-text h2 {
+      white-space: normal;
     }
   }
 </style>
