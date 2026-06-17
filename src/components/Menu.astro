@@ -35,7 +35,7 @@ const categoryImages: Record<string, string> = {
           </div>
           <h3 class="menu-category-name">{category.name}</h3>
         </div>
-        <div class="menu-grid">
+        <div class={`menu-grid${category.id === 'burritos' || category.id === 'nachos' ? ' menu-grid--2plus1' : ''}`}>
           {category.items.map((item) => (
             <MenuCard item={item} />
           ))}
@@ -130,6 +130,14 @@ const categoryImages: Record<string, string> = {
     gap: 1.2rem;
   }
 
+  .menu-grid--2plus1 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .menu-grid--2plus1 > :global(:nth-child(3)) {
+    grid-column: 1 / -1;
+  }
+
   .menu-note {
     display: flex;
     align-items: center;
@@ -151,8 +159,13 @@ const categoryImages: Record<string, string> = {
   }
 
   @media (max-width: 600px) {
-    .menu-grid {
+    .menu-grid,
+    .menu-grid--2plus1 {
       grid-template-columns: 1fr;
+    }
+
+    .menu-grid--2plus1 > :global(:nth-child(3)) {
+      grid-column: auto;
     }
   }
 </style>
