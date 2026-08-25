@@ -14,7 +14,7 @@ Deploy is automatic: push to `main` → Vercel picks it up. No manual deploy ste
 
 ## Architecture
 
-Single-page Astro static site (`output: 'static'`). One entry point: `src/pages/index.astro` imports every section component in order.
+Single-page Astro static site (`output: 'static'`). One entry point: `src/pages/index.astro` renders every section component in a fixed order: `Nav` → `Hero` → `About` → `Menu` → `Events` → `EventTypes` → `Contact` (which also contains the `<footer>`).
 
 **Data → Component flow:**  
 Content lives in `src/data/` as typed TypeScript exports. Components import and map over it — no props drilling through pages.
@@ -22,6 +22,8 @@ Content lives in `src/data/` as typed TypeScript exports. Components import and 
 - `src/data/menu.ts` → `Menu.astro` + `MenuCard.astro`
 - `src/data/events.ts` → `Events.astro`
 - `src/data/eventTypes.ts` → `EventTypes.astro`
+
+`Nav`, `Hero`, `About`, and `Contact` have no backing data file — their copy (founder bios, contact info, footer text) is hardcoded directly in the component markup. Edit the `.astro` file directly for those.
 
 **Styles:**  
 - `src/styles/global.css` — CSS custom properties (design tokens), global utilities (`.container`, `.btn`, `.glitch-text`, `.reveal`, `.float`, `.section-heading`). **Always use tokens, never hardcoded colors.**

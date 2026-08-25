@@ -28,6 +28,15 @@ export const events: Event[] = [
     url: 'https://www.trebsinskezvoneni.cz',
   },
   {
+    name: 'Zámek Fest',
+    nameLine1: 'Zámek',
+    nameLine2: 'Fest',
+    date: '29. srpna',
+    month: 'srpen',
+    location: 'Čakovický zámek',
+    url: 'https://www.facebook.com/events/s/zamekfest26/1396548349191711/',
+  },
+  {
     name: 'Trampské Pikovice',
     nameLine1: 'Trampské',
     nameLine2: 'Pikovice',
