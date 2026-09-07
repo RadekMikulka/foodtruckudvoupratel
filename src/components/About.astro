@@ -62,7 +62,7 @@
     </div>
 
     <!-- DALŠÍ PŘÁTELÉ (bez medailonků) -->
-    <h3 class="friends-heading reveal" style="--delay: 0.05s">All Stars Team</h3>
+    <h3 id="all-stars-team" class="friends-heading reveal" style="--delay: 0.05s">All Stars Team</h3>
 
     <div class="about-friends reveal" style="--delay: 0.1s">
       <div class="about-friend">
@@ -431,6 +431,7 @@
 
   /* ── DALŠÍ PŘÁTELÉ ──────────────────────────────────── */
   .friends-heading {
+    scroll-margin-top: 100px;
     font-family: var(--font-heading);
     font-size: clamp(2rem, 4.5vw, 3.4rem);
     text-transform: uppercase;
@@ -620,14 +621,14 @@
       width: 65%;
     }
 
-    /* 7 friends → rows of 2 + 2 + 2 + 1 (last one centers itself) */
+    /* rows of 2, flush to the container edges (odd one out still centers) */
     .about-friends {
-      gap: 1.4rem 1rem;
-      max-width: 360px;
+      gap: 1.6rem 1rem;
+      max-width: 100%;
     }
 
     .about-friend {
-      width: 150px;
+      width: calc(50% - 0.5rem);
     }
 
     .about-text h2 {
