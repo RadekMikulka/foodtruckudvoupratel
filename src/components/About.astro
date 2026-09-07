@@ -88,6 +88,13 @@
 
       <div class="about-friend">
         <div class="friend-portrait-wrap">
+          <img src="/team-janca.webp" alt="Janča" class="friend-portrait" width="300" height="300" loading="lazy" />
+        </div>
+        <p class="friend-name">Janča</p>
+      </div>
+
+      <div class="about-friend">
+        <div class="friend-portrait-wrap">
           <img src="/team-malicka.webp" alt="Maličká" class="friend-portrait" width="300" height="300" loading="lazy" />
         </div>
         <p class="friend-name">Maličká</p>
@@ -448,8 +455,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.8rem 1.5rem;
-    max-width: 980px;
+    gap: 2rem 1.8rem;
+    max-width: 820px;
     margin: 0 auto 4rem;
   }
 
@@ -459,7 +466,7 @@
     align-items: center;
     text-align: center;
     flex: 0 0 auto;
-    width: 210px;
+    width: 240px;
     transition: transform 0.35s ease;
   }
 
@@ -598,7 +605,7 @@
   .reveal { transition-delay: var(--delay, 0s); }
 
   /* ── RESPONSIVE ─────────────────────────────────────── */
-  /* Tablet: 7 friends → rows of 3 + 3 + 1 (last one centers itself) */
+  /* Tablet: keep the 3×3 grid, just smaller */
   @media (max-width: 900px) {
     .about-friends {
       gap: 1.5rem 1.2rem;
